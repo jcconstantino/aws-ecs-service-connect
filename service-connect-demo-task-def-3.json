@@ -18,7 +18,7 @@
             "environment": [
                 {
                     "name": "FLASK_APP",
-                    "value": "flask_app_3/app.py"
+                    "value": "flask_app_3.app:flask_app"
                 }
             ],
             "environmentFiles": [],
