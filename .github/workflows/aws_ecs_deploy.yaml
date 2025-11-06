@@ -55,7 +55,7 @@ jobs:
       AWS_ECS_CLUSTER_NAME_2: service-connect-demo-cluster-2-v1
       AWS_ECS_SERVICE_NAME_1: service-connect-demo-task-def-1
       AWS_ECS_SERVICE_NAME_2: service-connect-demo-task-def-2
-      AWS_ECS_SERVICE_NAME_3: service-connect-demo-task-def-3
+      AWS_ECS_SERVICE_NAME_3: service-connect-demo-service-3
       # shared between all services - not used in
       AWS_ECS_TASK_DEFINITION_1: service-connect-demo-task-def-1-v1
       AWS_ECS_TASK_DEFINITION_2: service-connect-demo-task-def-2-v2
