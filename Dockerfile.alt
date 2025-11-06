@@ -4,10 +4,9 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Avoid cache purge by adding requirements first
-ADD ./pyproject.toml ./pyproject.toml
+ADD ./requirements.txt ./requirements.txt
 
-RUN pip install uv wheel
-RUN uv pip install -e . --system
+RUN pip install -r requirements.txt
 
 # Add the rest of the files
 COPY . /app

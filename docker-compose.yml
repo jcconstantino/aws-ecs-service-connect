@@ -21,7 +21,7 @@ services:
     expose:  # container communication only, no host communication
       - 5000
     ports:  # communication with host
-      - 5000:5000
+      - 5001:5000
     container_name: flask_app_1
     # allows for debugging with pdb
     stdin_open: true
@@ -47,7 +47,7 @@ services:
     expose:  # container communication only, no host communication
       - 5001
     ports:  # communication with host
-      - 5001:5001
+      - 5002:5001
     container_name: flask_app_2
     # allows for debugging with pdb
     stdin_open: true
@@ -73,7 +73,7 @@ services:
     expose:  # container communication only, no host communication
       - 5002
     ports:  # communication with host
-      - 5002:5002
+      - 5003:5002
     container_name: flask_app_3
     # allows for debugging with pdb
     stdin_open: true
