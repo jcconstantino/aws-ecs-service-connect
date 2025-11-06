@@ -75,7 +75,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@main
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -83,22 +83,21 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@main
+      uses: aws-actions/amazon-ecr-login@v2
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-deploy-image
-      uses: whoan/docker-build-with-cache-action@master
-      with:
-        username: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-        password: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        registry: ${{ steps.login-ecr.outputs.registry }}
-        image_name: ${{ env.AWS_ECR_REPOSITORY_NAME }}
-        image_tag: ${{ env.IMAGE_TAG }}
-        push_image_and_stages: true
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY_NAME }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Fill in the new image ID in the Amazon ECS task definition 1
       id: task-def-1
-      uses: aws-actions/amazon-ecs-render-task-definition@master
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: service-connect-demo-task-def-1-v1.json
         container-name: ${{ env.AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_1 }}
@@ -106,7 +105,7 @@ jobs:
 
     - name: Fill in the new image ID in the Amazon ECS task definition 2
       id: task-def-2
-      uses: aws-actions/amazon-ecs-render-task-definition@master
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: service-connect-demo-task-def-2-v2.json
         container-name: ${{ env.AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_2 }}
@@ -114,17 +113,15 @@ jobs:
 
     - name: Fill in the new image ID in the Amazon ECS task definition 3
       id: task-def-3
-      uses: aws-actions/amazon-ecs-render-task-definition@master
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: service-connect-demo-task-def-3-v3.json
         container-name: ${{ env.AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_3 }}
         image: ${{ steps.login-ecr.outputs.registry }}/${{ env.AWS_ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
 
-    # set `target_group` `deregistration_delay` parameter to lower value, otherwise long time to deploy
-    # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html#deregistration-delay
     - name: Deploy Amazon ECS task definition 1 to ECS service 1 in ECS cluster 1
       id: ecs-service-1
-      uses: aws-actions/amazon-ecs-deploy-task-definition@master
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def-1.outputs.task-definition }}
         service: ${{ env.AWS_ECS_CLUSTER_NAME_1 }}/${{ env.AWS_ECS_SERVICE_NAME_1 }}
@@ -135,7 +132,7 @@ jobs:
     # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html#deregistration-delay
     - name: Deploy Amazon ECS task definition 2 to ECS service 2 in ECS cluster 1
       id: ecs-service-2
-      uses: aws-actions/amazon-ecs-deploy-task-definition@master
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def-2.outputs.task-definition }}
         service: ${{ env.AWS_ECS_CLUSTER_NAME_1 }}/${{ env.AWS_ECS_SERVICE_NAME_2 }}
@@ -146,7 +143,7 @@ jobs:
     # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html#deregistration-delay
     - name: Deploy Amazon ECS task definition 3 to ECS service 3 in ECS cluster 2
       id: ecs-service-3
-      uses: aws-actions/amazon-ecs-deploy-task-definition@master
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def-3.outputs.task-definition }}
         service: ${{ env.AWS_ECS_CLUSTER_NAME_2 }}/${{ env.AWS_ECS_SERVICE_NAME_3 }}
