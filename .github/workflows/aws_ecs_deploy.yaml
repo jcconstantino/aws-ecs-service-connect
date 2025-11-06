@@ -94,7 +94,7 @@ jobs:
         image_name: ${{ env.AWS_ECR_REPOSITORY_NAME }}
         image_tag: ${{ env.IMAGE_TAG }}
         push_image_and_stages: true
-        build_extra_args: "--platform=linux/amd64"
+        build_extra_args: "--platform=linux/arm64"
 
     - name: Fill in the new image ID in the Amazon ECS task definition 1
       id: task-def-1
