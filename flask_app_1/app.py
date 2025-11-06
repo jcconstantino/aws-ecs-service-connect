@@ -14,7 +14,7 @@ flask_app = create_app()
 @flask_app.route('/')
 def hello() -> str:
     ''' Return a friendly HTTP greeting '''
-    return f'Hello, World from flask app 1! Time is {datetime.now()}'
+    return f'Hello, World from flask app 1! I ADDED THIS MESSAGE :) Time is {datetime.now()}'
 
 
 @flask_app.route('/get_message')
