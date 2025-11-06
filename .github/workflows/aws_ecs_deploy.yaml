@@ -62,8 +62,8 @@ jobs:
       AWS_ECS_TASK_DEFINITION_3: service-connect-demo-task-def-3-v3
 
       AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_1: flask-app-1-v1
-      AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_2: flask-app-2-v2
-      AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_3: flask-app-3-v3
+      AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_2: flask-app-1-v2
+      AWS_ECS_TASK_DEFINITION_CONTAINER_NAME_3: flask-app-1-v3
 
       AWS_DEFAULT_REGION: us-east-1
       IMAGE_TAG: ${{ github.sha }}
