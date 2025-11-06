@@ -1,0 +1,112 @@
+{
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "containerDefinitions": [
+        {
+            "command": [
+                "python",
+                "-m",
+                "flask",
+                "run",
+                "--host=0.0.0.0",
+                "--port=5001"
+            ],
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "FLASK_APP",
+                    "value": "flask_app_1/app.py"
+                },
+                {
+                    "name": "PORT_FLASK_APP_3",
+                    "value": "5003"
+                },
+                {
+                    "name": "PORT_FLASK_APP_2",
+                    "value": "5002"
+                }
+            ],
+            "environmentFiles": [],
+            "essential": true,
+            "image": "367471965495.dkr.ecr.us-east-1.amazonaws.com/service-connect-demo-ecr-v1:latest",
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/service-connect-demo-task-def-1-v1",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "mountPoints": [],
+            "name": "flask-app-1-v1",
+            "portMappings": [
+                {
+                    "appProtocol": "http",
+                    "containerPort": 5001,
+                    "hostPort": 5001,
+                    "name": "flask-app-1-v1",
+                    "protocol": "tcp"
+                }
+            ],
+            "systemControls": [],
+            "ulimits": [],
+            "volumesFrom": []
+        }
+    ],
+    "cpu": "1024",
+    "enableFaultInjection": false,
+    "executionRoleArn": "arn:aws:iam::367471965495:role/ecsTaskExecutionRole",
+    "family": "service-connect-demo-task-def-1-v1",
+    "memory": "3072",
+    "networkMode": "awsvpc",
+    "placementConstraints": [],
+    "registeredAt": "2025-11-05T04:15:33.982Z",
+    "registeredBy": "arn:aws:iam::367471965495:user/ssi-jcc",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "revision": 2,
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "status": "ACTIVE",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:367471965495:task-definition/service-connect-demo-task-def-1-v1:2",
+    "taskRoleArn": "arn:aws:iam::367471965495:role/ecsTaskExecutionRole",
+    "volumes": [],
+    "tags": []
+}
